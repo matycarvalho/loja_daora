@@ -1,0 +1,3 @@
+Herança no spring boot
+https://medium.com/@a.r.m.monesan_9577/inheritance-and-auditing-with-jpa-entities-in-spring-boot-9e09c3788907
+
