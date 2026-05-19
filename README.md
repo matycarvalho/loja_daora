@@ -10,14 +10,14 @@
 	* [ ] A listagem deve ser dinâmica, gerada a partir de dados do banco de
 		  dados;
 	* [ ] Cada produto deve conter um link para a página de detalhes;
-	* [ ] Exibir todos os atributos do produto selecionado (nome, imagem, preço,
-		  descrição, etc.) na página de detalhes.
+	* [ ] Exibir todos os atributos do produto selecionado (nome, imagem,
+		  preço, descrição, etc.) na página de detalhes.
 	* [ ] A página de detalhes deve ser acessível através do link presente na
 		  página inicial.
 
 * [ ] Bando de dados e CRUD
-	* [ ] Implementar no mínimo 2 tabelas no banco de dados, sendo ela usuário e
-		  produto Implementar as operações CRUD (Create, Read e Delete) para
+	* [ ] Implementar no mínimo 2 tabelas no banco de dados, sendo ela usuário
+		  e produto Implementar as operações CRUD (Create, Read e Delete) para
 		  todas as tabelas através da interface Web.
 
 * [ ] Busca
@@ -48,15 +48,15 @@
 	  disciplina.
 * [ ] Upload de imagens
 	  (https://buenodc.com/learn/springboot/uploading-files-with-spring/)
-* [ ] AJAX: Implementar funcionalidades assíncronas utilizando AJAX (ex: Cálculo
-	  de Frete).
+* [ ] AJAX: Implementar funcionalidades assíncronas utilizando AJAX (ex:
+	  Cálculo de Frete).
 * [ ] Paginação: Implementar paginação para a listagem de produtos.
 * [ ] Cupom de Desconto: Implementar sistema de cupom de desconto.
 
 ### Critérios de Avaliação:
-1) Funcionalidades: O projeto será avaliado com base na implementação correta de
-todas as funcionalidades descritas nos requisitos.
-2) Qualidade do Código: A organização, legibilidade, documentação e testes serão
-considerados na avaliação.
+1) Funcionalidades: O projeto será avaliado com base na implementação correta
+de todas as funcionalidades descritas nos requisitos.
+2) Qualidade do Código: A organização, legibilidade, documentação e testes
+serão considerados na avaliação.
 3) Requisitos Adicionais: A implementação de funcionalidades adicionais será
 considerada para aumentar a nota final.
