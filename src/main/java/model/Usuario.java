@@ -15,7 +15,9 @@ import jakarta.persistence.Table;
 @Table(name = "Usuario")
 public class Usuario {
 	// seria bom se a senha fosse criptografada...
+	// https://docs.spring.io/spring-security/reference/features/authentication/password-storage.html
 	// TODO: VALIDAÇÃO
+	// TODO: CRIAR CLASSE MODO DE PAGAMENTO
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,9 +54,6 @@ public class Usuario {
 	@Column(name = "estado")
 	private String estado;
 
-	@Column(name = "numero_cartao")
-	private long numero_cartao;
-
 	@Column(name = "cpf")
 	private String cpf;
 
@@ -62,8 +61,7 @@ public class Usuario {
 	}
 
 	public Usuario(String nome, long telefone, String email, String senha, String endereco, String complemento,
-			String complemento_endereco, String bairro, String cidade, String cep, String estado, long numero_cartao,
-			String cpf) {
+			String complemento_endereco, String bairro, String cidade, String cep, String estado, String cpf) {
 		this.nome = nome;
 		this.telefone = telefone;
 		this.email = email;
@@ -74,7 +72,6 @@ public class Usuario {
 		this.cidade = cidade;
 		this.cep = cep;
 		this.estado = estado;
-		this.numero_cartao = numero_cartao;
 		this.cpf = cpf;
 	}
 
@@ -166,14 +163,6 @@ public class Usuario {
 		this.estado = estado;
 	}
 
-	public long getNumero_cartao() {
-		return numero_cartao;
-	}
-
-	public void setNumero_cartao(long numero_cartao) {
-		this.numero_cartao = numero_cartao;
-	}
-
 	public String getCpf() {
 		return cpf;
 	}
@@ -181,5 +170,4 @@ public class Usuario {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-
 }
