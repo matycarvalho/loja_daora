@@ -1,26 +1,65 @@
-package com.ifsp.loja;
+package model;
+
+import org.springframework.data.annotation.Id;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Table;
 
 /**
  * Usuario
  */
+@Entity
+@Table(name = "Usuario")
 public class Usuario {
 	// seria bom se a senha fosse criptografada...
-	// TODO: VALIDAÇÃO 
+	// TODO: VALIDAÇÃO
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private long id;
+
+	@Column(name = "nome")
 	private String nome;
+
+	@Column(name = "telefone")
 	private long telefone;
+
+	@Column(name = "email")
 	private String email;
+
+	@Column(name = "senha")
 	private String senha;
+
+	@Column(name = "endereco")
 	private String endereco;
+
+	@Column(name = "complemento_endereco")
 	private String complemento_endereco;
+
+	@Column(name = "bairro")
 	private String bairro;
+
+	@Column(name = "cidade")
 	private String cidade;
+
+	@Column(name = "cep")
 	private String cep;
+
+	@Column(name = "estado")
 	private String estado;
+
+	@Column(name = "numero_cartao")
 	private long numero_cartao;
+
+	@Column(name = "cpf")
 	private String cpf;
 
 	public Usuario() {
-	};
+	}
 
 	public Usuario(String nome, long telefone, String email, String senha, String endereco, String complemento,
 			String complemento_endereco, String bairro, String cidade, String cep, String estado, long numero_cartao,
@@ -37,6 +76,14 @@ public class Usuario {
 		this.estado = estado;
 		this.numero_cartao = numero_cartao;
 		this.cpf = cpf;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getNome() {
