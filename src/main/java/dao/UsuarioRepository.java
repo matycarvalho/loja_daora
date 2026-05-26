@@ -13,7 +13,14 @@ import jakarta.transaction.Transactional;
 
 /**
  * UsuarioRepository
+ *
  */
+/*TODO: Trocar essa coisinha toda por isso:
+ *
+ * public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+ *  }
+ *  nos controllers: usuario.findbyid().orelse
+*/
 @Repository
 public class UsuarioRepository {
 	@PersistenceContext
