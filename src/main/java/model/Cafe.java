@@ -24,13 +24,14 @@ public class Cafe extends Produto{
     }
 
     
-    //Resto das variaveis
+    //Resto das variáveis
     @Column(name="peso")
     private double peso;
     @Column(name="ingredientes")
     private String ingredientes;
 
 
+    //construtores
     public Cafe(Long id, double peso, String ingredientes) {
         this.id = id;
         this.peso = peso;
@@ -58,5 +59,4 @@ public class Cafe extends Produto{
     }
 
 
-    //construtores
 }

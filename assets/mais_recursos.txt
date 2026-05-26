@@ -1,3 +1,94 @@
 Herança no spring boot
 https://medium.com/@a.r.m.monesan_9577/inheritance-and-auditing-with-jpa-entities-in-spring-boot-9e09c3788907
 
+Com certeza, irmão! Vamos abrir o capô do projeto e entender detalhadamente o que acontece por baixo dos panos.
+
+Para entender o Lombok de verdade, precisamos falar sobre **como ele funciona no compilador** e **como ele se encaixa na arquitetura do Spring Boot**.
+
+---
+
+## 1. Como o Lombok funciona por trás das cenas?
+
+O Java é uma linguagem conhecida por ser "verbosa" (exige muito código para fazer coisas simples). O Lombok resolve isso usando um recurso do próprio Java chamado **Annotation Processing API** (Processamento de Anotações).
+
+Quando você clica em "Build" ou "Run" na sua IDE, o processo acontece da seguinte forma:
+
+```
+[Seu Código .java] ➔ [Lombok modifica a árvore do código (AST)] ➔ [Compilador gera o .class com os Getters/Setters]
+
+```
+
+1. **Leitura do código:** O compilador do Java (`javac`) lê o seu arquivo `.java` limpo (com apenas as anotações `@Getter` e `@Setter`).
+2. **Intercepção do Lombok:** O Lombok "atravessa" o caminho do compilador antes dele gerar o arquivo final. Ele analisa o código e, se encontrar a anotação, ele altera a **Árvore de Sintaxe Abstrata (AST)** do Java na memória.
+3. **Geração do Bytecode:** O compilador gera o arquivo `.class` (o código que o computador realmente roda) já com todos os métodos `get`, `set` e construtores escritos em código de máquina.
+
+> 🛠️ **Ou seja:** Para a máquina virtual do Java (JVM), os métodos existem fisicamente. Para você, no editor de código, a classe continua limpa com 10 linhas.
+
+---
+
+## 2. O Mistério do `@RequiredArgsConstructor` (Injeção de Dependência)
+
+Essa é a engrenagem mais importante quando falamos de Spring Boot. Antigamente, para conectar um componente no outro (como um `Controller` chamar um `Service`), os desenvolvedores usavam muito isso aqui:
+
+```java
+// O JEITO ANTIGO (Não recomendado hoje em dia)
+@RestController
+public class ProdutoController {
+
+    @Autowired // O Spring injetava direto no atributo
+    private ProdutoService produtoService; 
+}
+
+```
+
+**Por que isso virou uma prática ruim?** Porque dificulta testes unitários (você não consegue mockar esse service facilmente sem o Spring rodando) e permite que o objeto seja criado sem essa dependência crucial, gerando o famoso `NullPointerException`.
+
+A comunidade Spring passou a recomendar a **Injeção via Construtor**. O código correto seria este:
+
+```java
+// O JEITO RECOMENDADO (Sem Lombok)
+@RestController
+public class ProdutoController {
+
+    private final ProdutoService produtoService;
+
+    // Você é obrigado a criar esse construtor na mão:
+    public ProdutoController(ProdutoService produtoService) {
+        this.produtoService = produtoService;
+    }
+}
+
+```
+
+### Onde o Lombok entra?
+
+O `@RequiredArgsConstructor` olha para os atributos que têm a palavra-chave **`final`** (ou seja, obrigatórios, que não mudam de valor após criados) e gera exatamente aquele construtor ali de cima automaticamente.
+
+O Spring Boot, por sua vez, tem uma regra inteligente: **se uma classe tem apenas um construtor, o Spring usa ele automaticamente para injetar as dependências**, sem que você precise digitar o `@Autowired`. É o casamento perfeito.
+
+---
+
+## 3. Por que o Hibernate exige o `@NoArgsConstructor`?
+
+Se você trabalha com banco de dados no Spring Boot (usando Spring Data JPA / Hibernate), você vai notar que toda classe marcada com `@Entity` precisa do `@NoArgsConstructor` (construtor vazio).
+
+O motivo é técnico: o Hibernate usa um conceito chamado **Java Reflection** para criar os objetos que vêm do banco de dados.
+
+1. Quando você faz uma busca no banco, o Hibernate primeiro cria uma "casca" vazia do seu objeto usando o construtor padrão: `new Usuario();`
+2. Depois, ele usa métodos internos para ir preenchendo os atributos (id, nome, email) linha por linha.
+
+Se você colocar apenas o `@AllArgsConstructor` na sua entidade, o Java **apaga** o construtor vazio padrão. Aí o Hibernate quebra porque não acha a "casca vazia" para iniciar o objeto. Por isso usamos os dois juntos nas entidades.
+
+---
+
+## Resumo das Anotações do Lombok
+
+Para fechar, aqui está um mapa mental rápido de qual anotação usar e quando:
+
+| Anotação | O que ela gera? | Onde mais se usa no Spring? |
+| --- | --- | --- |
+| **`@Getter` / `@Setter**` | Métodos de leitura e escrita dos atributos. | Em **Models, Entidades e DTOs** (classes que carregam dados). |
+| **`@NoArgsConstructor`** | Construtor sem nenhum argumento `public Classe() {}`. | Obrigatório em **Entidades JPA/Hibernate**. |
+| **`@AllArgsConstructor`** | Construtor com todos os parâmetros da classe. | Muito usado em **DTOs e classes de teste** para criar objetos rápidos. |
+| **`@RequiredArgsConstructor`** | Construtor apenas para atributos `final`. | O padrão ouro para **Controllers, Services e Components** (Injeção de dependência). |
+| **`@Data`** | Um "combo" que inclui: `@Getter`, `@Setter`, `@ToString`, `@EqualsAndHashCode` e `@RequiredArgsConstructor`. | Em **DTOs simples**, mas evite usar direto em Entidades do banco (pode dar problemas de performance no `hashCode`). |
