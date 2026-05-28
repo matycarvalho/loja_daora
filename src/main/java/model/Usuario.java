@@ -60,7 +60,7 @@ public class Usuario {
 	public Usuario() {
 	}
 
-	public Usuario(String nome, long telefone, String email, String senha, String endereco, String complemento,
+	public Usuario(String nome, long telefone, String email, String senha, String endereco,
 			String complemento_endereco, String bairro, String cidade, String cep, String estado, String cpf) {
 		this.nome = nome;
 		this.telefone = telefone;
